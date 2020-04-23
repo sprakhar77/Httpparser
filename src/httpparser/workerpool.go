@@ -14,8 +14,12 @@ type WorkerPool struct {
 
 func NewWorkerPool(tasks []*Task, concurrency int) *WorkerPool {
 	if concurrency > 100 {
-		log.Println("Concurrency is limited to 100.")
+		log.Println("Maximum concurrent operations allowed is 100. Using 100 workers")
 		concurrency = 100
+	}
+	if concurrency <= 0 {
+		log.Println("Minimum concurrent can not be negetive or 0, setting it to 1")
+		concurrency = 1
 	}
 	return &WorkerPool{
 		tasks:       tasks,
