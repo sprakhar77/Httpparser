@@ -3,10 +3,10 @@ package main
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"flag"
 	"io/ioutil"
 	"log"
 	"net/http"
-	"os"
 )
 
 func ComputeMD5Hash(data string) string {
@@ -31,15 +31,20 @@ func SendRequest(url string) error {
 }
 
 func main() {
+
+	var concurrency int
+	flag.IntVar(&concurrency, "concurrency", 10, "Number of concurrency tasks allowed")
+	flag.Parse()
+
 	tasks := make([]*Task, 0)
-	for _, url := range os.Args[1:] {
+	for _, url := range flag.Args() {
 		tasks = append(tasks, NewTask(func() error { return SendRequest(url) }))
 	}
 
-	pool := NewPool(tasks, 10)
-	pool.Run()
+	workerPool := NewWorkerPool(tasks, concurrency)
+	workerPool.Run()
 
-	for _, task := range pool.tasks {
+	for _, task := range workerPool.tasks {
 		if task.err != nil {
 			log.Fatal(task.err)
 		}
