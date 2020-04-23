@@ -20,14 +20,14 @@ func TestComputeMD5HashIsConsistentForSameString(t *testing.T) {
 func TestSendRequestForEmptyUrl(t *testing.T) {
 	_, err := SendRequest("")
 	if err == nil {
-		t.Errorf("Generate error on empty URL, got: nil, want: %s", err)
+		t.Errorf("Generate error on empty URL, got: nil")
 	}
 }
 
 func TestSendRequestForInvalidUrl(t *testing.T) {
 	_, err := SendRequest("some random garbage content")
 	if err == nil {
-		t.Errorf("Generate error on empty URL, got: nil, want: %s", err)
+		t.Errorf("Generate error on empty URL, got: nil")
 	}
 }
 
