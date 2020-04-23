@@ -38,6 +38,8 @@ Output
 
 How to run tests?
 ````
+cd Httpparser
+export GOPATH="$PWD"
 go test ./...
 ````
 
